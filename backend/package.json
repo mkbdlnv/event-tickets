@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "start": "node cluster.js",
+    "start": "node scripts/start.js",
+    "start:wsl": "node cluster.js",
     "dev": "node --watch cluster.js",
     "migrate": "knex migrate:latest --knexfile src/db/knexfile.js",
     "seed": "knex migrate:up 005_seed.js --knexfile src/db/knexfile.js"

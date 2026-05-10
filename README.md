@@ -20,6 +20,7 @@
    npm run seed
    npm start
    ```
+   On Windows, run backend commands from WSL or use `npm start` from PowerShell after dependencies were installed in WSL; the start script forwards execution to WSL so native bcrypt is loaded correctly.
 4. Frontend setup:
    ```
    cd frontend
