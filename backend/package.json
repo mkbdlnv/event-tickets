@@ -1,0 +1,25 @@
+{
+  "name": "ticket-booking-backend",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node cluster.js",
+    "dev": "node --watch cluster.js",
+    "migrate": "knex migrate:latest --knexfile src/db/knexfile.js",
+    "seed": "knex migrate:up 005_seed.js --knexfile src/db/knexfile.js"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^5.0.1",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "knex": "^3.1.0",
+    "pg": "^8.13.1",
+    "redis": "^4.7.0",
+    "uuid": "^11.0.3"
+  },
+  "devDependencies": {}
+}
