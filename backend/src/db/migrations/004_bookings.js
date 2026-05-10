@@ -1,7 +1,7 @@
 export async function up(knex) {
   await knex.schema.createTable('bookings', (table) => {
     table.increments('id').primary();
-    table.integer('user_id').notNullable().references('id').inTable('users').onDelete('CASCADE');
+    table.integer('user_id').notNullable().references('id').inTable('users');
     table.integer('event_id').notNullable().references('id').inTable('events');
     table.decimal('total_price', 10, 2).notNullable();
     table.string('status', 20).notNullable().defaultTo('confirmed');
