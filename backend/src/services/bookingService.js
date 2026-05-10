@@ -81,7 +81,7 @@ export async function confirmBooking(userId, eventId, seatIds) {
       throw conflict('Время бронирования истекло или места уже недоступны.');
     }
 
-    const event = await trx('events').where({ id: eventId }).first();
+    const event = await trx('events').where({ id: eventId }).whereNull('deleted_at').first();
     if (!event) throw badRequest('Событие не найдено.');
 
     const price = Number(event.price);
@@ -134,4 +134,48 @@ export async function releaseLocks(userId, seatIds) {
 
   await Promise.all([...new Set(seats.map((seat) => seat.event_id))].map((id) => deleteByPattern(`event:${id}:seats*`)));
   return { released: seatIds };
+}
+
+export async function cancelBooking(userId, bookingId) {
+  return db.transaction(async (trx) => {
+    const booking = await trx('bookings')
+      .join('events', 'bookings.event_id', 'events.id')
+      .where('bookings.id', bookingId)
+      .andWhere('bookings.user_id', userId)
+      .forUpdate()
+      .select('bookings.*', 'events.starts_at')
+      .first();
+
+    if (!booking) {
+      const error = new Error('Заказ не найден.');
+      error.status = 404;
+      throw error;
+    }
+    if (booking.status !== 'confirmed') {
+      const error = new Error('Этот заказ уже отменен.');
+      error.status = 409;
+      throw error;
+    }
+
+    if (new Date(booking.starts_at).getTime() - Date.now() <= 24 * 60 * 60 * 1000) {
+      const error = new Error('Отмена доступна только более чем за 24 часа до события.');
+      error.status = 409;
+      throw error;
+    }
+
+    const items = await trx('booking_items').where({ booking_id: bookingId }).select('seat_id');
+    const seatIds = items.map((item) => item.seat_id);
+    if (seatIds.length) {
+      await trx('seats').whereIn('id', seatIds).update({
+        status: 'available',
+        locked_until: null,
+        locked_by: null
+      });
+    }
+
+    const [updated] = await trx('bookings').where({ id: bookingId }).update({ status: 'cancelled' }).returning('*');
+    await deleteByPattern('events:*');
+    await deleteByPattern(`event:${booking.event_id}:seats*`);
+    return { ...updated, total_price: Number(updated.total_price) };
+  });
 }

@@ -14,6 +14,7 @@ router.delete('/me', requireAuth, async (req, res, next) => {
         locked_until: null,
         locked_by: null
       });
+      await trx('events').where({ created_by: req.user.id }).update({ created_by: null });
       await trx('bookings').where({ user_id: req.user.id }).del();
       await trx('users').where({ id: req.user.id }).del();
     });

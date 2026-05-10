@@ -4,13 +4,19 @@ export async function up(knex) {
   const [{ count }] = await knex('users').count('id');
   if (Number(count) > 0) return;
 
-  const [customer, admin] = await knex('users')
+  const [customer, manager, admin] = await knex('users')
     .insert([
       {
         email: 'user@test.com',
         password: await bcrypt.hash('Test1234', 12),
         display_name: 'Тестовый пользователь',
         role: 'customer'
+      },
+      {
+        email: 'manager@test.com',
+        password: await bcrypt.hash('Manager1234', 12),
+        display_name: 'Event Manager',
+        role: 'manager'
       },
       {
         email: 'admin@test.com',
@@ -32,7 +38,7 @@ export async function up(knex) {
         city: 'Almaty',
         starts_at: new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000),
         price: 3500,
-        created_by: admin.id
+        created_by: manager.id
       },
       {
         title: 'Летний концерт на крыше',
@@ -42,7 +48,7 @@ export async function up(knex) {
         city: 'Almaty',
         starts_at: new Date(now.getTime() + 10 * 24 * 60 * 60 * 1000),
         price: 9000,
-        created_by: admin.id
+        created_by: manager.id
       },
       {
         title: 'Финал университетской лиги',
@@ -78,5 +84,5 @@ export async function down(knex) {
   await knex('bookings').del();
   await knex('seats').del();
   await knex('events').del();
-  await knex('users').whereIn('email', ['user@test.com', 'admin@test.com']).del();
+  await knex('users').whereIn('email', ['user@test.com', 'manager@test.com', 'admin@test.com']).del();
 }

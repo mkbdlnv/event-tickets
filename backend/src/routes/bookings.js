@@ -1,7 +1,7 @@
 import express from 'express';
 import db from '../db/index.js';
 import { requireAuth } from '../middleware/auth.js';
-import { confirmBooking, lockSeats, releaseLocks } from '../services/bookingService.js';
+import { cancelBooking, confirmBooking, lockSeats, releaseLocks } from '../services/bookingService.js';
 
 const router = express.Router();
 
@@ -84,6 +84,14 @@ router.get('/history', async (req, res, next) => {
 router.delete('/lock', async (req, res, next) => {
   try {
     res.json(await releaseLocks(req.user.id, req.body.seat_ids));
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.patch('/:id/cancel', async (req, res, next) => {
+  try {
+    res.json(await cancelBooking(req.user.id, req.params.id));
   } catch (error) {
     next(error);
   }

@@ -17,6 +17,8 @@ if (cluster.isPrimary) {
   });
 } else {
   const { default: app } = await import('./src/app.js');
+  const { startLockExpiryJob } = await import('./src/jobs/lockExpiry.js');
+  startLockExpiryJob();
   app.listen(port, () => {
     console.log(`API listening on http://localhost:${port}`);
   });

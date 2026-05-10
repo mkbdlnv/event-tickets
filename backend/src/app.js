@@ -7,6 +7,7 @@ import authRoutes from './routes/auth.js';
 import eventRoutes from './routes/events.js';
 import bookingRoutes from './routes/bookings.js';
 import userRoutes from './routes/users.js';
+import healthRoutes from './routes/health.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { connectRedis } from './services/cacheService.js';
 
@@ -27,6 +28,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.get('/health', (req, res) => res.json({ ok: true }));
+app.use('/api/health', healthRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/bookings', bookingRoutes);
