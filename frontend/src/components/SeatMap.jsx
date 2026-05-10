@@ -1,3 +1,5 @@
+import React from 'react';
+
 const statusLabel = {
   available: 'доступно',
   locked: 'забронировано',

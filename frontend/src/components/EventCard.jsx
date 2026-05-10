@@ -1,3 +1,4 @@
+import React from 'react';
 import { CalendarDays, MapPin } from 'lucide-react';
 
 const labels = {
