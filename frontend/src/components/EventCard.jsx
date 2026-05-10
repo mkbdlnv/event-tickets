@@ -19,9 +19,7 @@ export default function EventCard({ event, onClick }) {
       </div>
       <div className="meta">
         <MapPin size={18} />
-        <span>
-          {event.venue}, {event.city}
-        </span>
+        <span>{event.venue}, {event.city}</span>
       </div>
       <div className="card-footer">
         <strong>{Number(event.price).toLocaleString('ru-RU')} KZT</strong>

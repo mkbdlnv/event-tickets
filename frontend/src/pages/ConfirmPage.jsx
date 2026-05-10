@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
-import { useEffect, useMemo, useState } from 'react';
+import toast from 'react-hot-toast';
 import BookingSteps from '../components/BookingSteps.jsx';
 import { apiError, bookingsApi } from '../api/index.js';
 import { useBooking } from '../state.jsx';
@@ -28,6 +28,10 @@ export default function ConfirmPage() {
     onSuccess(data) {
       setConfirmation(data);
       setDraft(null);
+      toast.success('Бронирование подтверждено');
+    },
+    onError(error) {
+      toast.error(apiError(error));
     }
   });
 
@@ -64,7 +68,7 @@ export default function ConfirmPage() {
         <strong className="total">Итого: {total.toLocaleString('ru-RU')} KZT</strong>
         <label>Номер карты<input value={card} onChange={(e) => setCard(e.target.value)} inputMode="numeric" placeholder="0000 0000 0000 0000" /></label>
         <button className="primary" disabled={remaining <= 0 || confirmMutation.isPending} onClick={() => confirmMutation.mutate()}>
-          {confirmMutation.isPending ? 'Оплачиваем...' : `Оплатить ${total.toLocaleString('ru-RU')} KZT`}
+          {confirmMutation.isPending ? <span className="spinner-label"><i className="spinner" /> Обработка...</span> : `Оплатить ${total.toLocaleString('ru-RU')} KZT`}
         </button>
         <button className="ghost" onClick={() => navigate(`/events/${draft.event.id}/seats`)}>Вернуться к местам</button>
       </section>

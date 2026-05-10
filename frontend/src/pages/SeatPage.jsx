@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useMemo, useState } from 'react';
+import toast from 'react-hot-toast';
 import BookingSteps from '../components/BookingSteps.jsx';
 import SeatMap from '../components/SeatMap.jsx';
 import { apiError, bookingsApi, eventsApi } from '../api/index.js';
@@ -36,7 +36,9 @@ export default function SeatPage() {
       navigate('/bookings/confirm');
     },
     onError(err) {
-      setError(apiError(err));
+      const message = apiError(err);
+      setError(message);
+      toast.error(message);
       seatsQuery.refetch();
     }
   });
@@ -51,7 +53,7 @@ export default function SeatPage() {
   function toggleSeat(seat) {
     setError('');
     setSelected((current) => {
-      if (current.includes(seat.id)) return current.filter((id) => id !== seat.id);
+      if (current.includes(seat.id)) return current.filter((seatId) => seatId !== seat.id);
       if (current.length >= 6) {
         setError('Можно выбрать не больше 6 мест.');
         return current;
@@ -60,7 +62,13 @@ export default function SeatPage() {
     });
   }
 
-  if (eventQuery.isLoading || seatsQuery.isLoading) return <main className="page"><div className="notice">Загружаем зал...</div></main>;
+  if (eventQuery.isLoading || seatsQuery.isLoading) {
+    return <main className="page"><div className="center-loader"><i className="spinner" /> Загружаем зал...</div></main>;
+  }
+
+  if (eventQuery.error) {
+    return <main className="page"><div className="error">Событие не найдено.</div><Link to="/events">К афише</Link></main>;
+  }
 
   return (
     <main className="page">
@@ -78,7 +86,7 @@ export default function SeatPage() {
       <div className="action-bar">
         <span>Выбрано мест: {selected.length}</span>
         <button className="primary" disabled={!selected.length || lockMutation.isPending} onClick={() => user ? lockMutation.mutate() : navigate('/login')}>
-          {lockMutation.isPending ? 'Бронируем...' : 'Забронировать выбранные места'}
+          {lockMutation.isPending ? <span className="spinner-label"><i className="spinner" /> Обработка...</span> : 'Забронировать выбранные места'}
         </button>
       </div>
     </main>

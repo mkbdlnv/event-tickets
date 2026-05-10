@@ -20,7 +20,8 @@ a {
 
 button,
 input,
-select {
+select,
+textarea {
   font: inherit;
 }
 
@@ -105,13 +106,25 @@ h1 {
 }
 
 input,
-select {
+select,
+textarea {
   background: #fff;
   border: 1px solid #cad5da;
   border-radius: 8px;
   min-height: 44px;
   padding: 10px 12px;
   width: 100%;
+}
+
+textarea {
+  min-height: 96px;
+  resize: vertical;
+}
+
+.nav-links {
+  align-items: center;
+  display: flex;
+  gap: 16px;
 }
 
 .event-grid {
@@ -199,6 +212,11 @@ select {
   border: 1px solid #dde5e8;
   border-radius: 8px;
   padding: 18px;
+}
+
+.seat-scroll {
+  overflow-x: auto;
+  padding-bottom: 4px;
 }
 
 .screen {
@@ -295,6 +313,8 @@ select {
 
 .primary,
 .ghost,
+.danger,
+.tabs button,
 .pagination button {
   border: 0;
   border-radius: 8px;
@@ -318,6 +338,11 @@ select {
 .ghost {
   background: #e8eef0;
   color: #172026;
+}
+
+.danger {
+  background: #be3b3b;
+  color: #fff;
 }
 
 .link-button {
@@ -418,6 +443,143 @@ select {
   padding: 18px;
 }
 
+.empty-state,
+.admin-panel {
+  background: #fff;
+  border: 1px solid #dde5e8;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  padding: 22px;
+}
+
+.skeleton-card {
+  animation: pulse 1.3s ease-in-out infinite;
+  background: linear-gradient(90deg, #e7edf0 25%, #f3f6f7 50%, #e7edf0 75%);
+  background-size: 200% 100%;
+  border-radius: 8px;
+  min-height: 270px;
+}
+
+@keyframes pulse {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+.spinner {
+  animation: spin 0.8s linear infinite;
+  border: 2px solid rgba(255, 255, 255, 0.45);
+  border-top-color: #fff;
+  border-radius: 50%;
+  display: inline-block;
+  height: 16px;
+  width: 16px;
+}
+
+.center-loader {
+  align-items: center;
+  background: #fff;
+  border: 1px solid #dde5e8;
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  min-height: 220px;
+}
+
+.center-loader .spinner {
+  border-color: rgba(21, 109, 126, 0.25);
+  border-top-color: #156d7e;
+}
+
+.spinner-label {
+  align-items: center;
+  display: inline-flex;
+  gap: 8px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.tabs button {
+  background: #e8eef0;
+  color: #172026;
+}
+
+.tabs button.active {
+  background: #156d7e;
+  color: #fff;
+}
+
+.admin-form {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.admin-form label {
+  display: grid;
+  font-weight: 700;
+  gap: 6px;
+}
+
+.admin-form label:nth-child(2) {
+  grid-column: 1 / -1;
+}
+
+.admin-form button {
+  justify-self: start;
+}
+
+.admin-table {
+  display: grid;
+  gap: 12px;
+}
+
+.admin-row {
+  align-items: center;
+  border: 1px solid #dde5e8;
+  border-radius: 8px;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1.4fr 0.7fr auto;
+  padding: 14px;
+}
+
+.admin-row .admin-form {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+.row-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.status {
+  border-radius: 999px;
+  display: inline-block;
+  font-size: 0.85rem;
+  font-weight: 800;
+  padding: 4px 9px;
+}
+
+.status.confirmed {
+  background: #e2f2f0;
+  color: #145f55;
+}
+
+.status.cancelled {
+  background: #f4e8e8;
+  color: #8a3333;
+}
+
 @media (max-width: 820px) {
   .topbar,
   .action-bar,
@@ -428,7 +590,9 @@ select {
 
   .steps,
   .filters,
-  .event-grid {
+  .event-grid,
+  .admin-form,
+  .admin-row {
     grid-template-columns: 1fr;
   }
 
@@ -437,6 +601,18 @@ select {
   }
 
   .seat-grid {
-    grid-template-columns: repeat(5, minmax(42px, 1fr));
+    grid-template-columns: repeat(5, 46px);
+  }
+
+  .seat-scroll {
+    margin-inline: -8px;
+    padding-inline: 8px;
+  }
+
+  .nav-links,
+  .row-actions,
+  .tabs {
+    align-items: stretch;
+    flex-direction: column;
   }
 }

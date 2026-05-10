@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import toast from 'react-hot-toast';
 import EventCard from '../components/EventCard.jsx';
 import BookingSteps from '../components/BookingSteps.jsx';
 import { eventsApi } from '../api/index.js';
@@ -18,6 +18,11 @@ export default function EventsPage() {
     setFilters((current) => ({ ...current, [key]: value, page: 1 }));
   }
 
+  function clearFilters() {
+    setFilters({ category: '', city: '', search: '', page: 1 });
+    toast.success('Фильтры сброшены');
+  }
+
   return (
     <main className="page">
       <header className="topbar">
@@ -25,7 +30,8 @@ export default function EventsPage() {
           <h1>Афиша событий</h1>
           <p>Выберите событие, места и подтвердите оплату.</p>
         </div>
-        <nav>
+        <nav className="nav-links">
+          {user && ['manager', 'admin'].includes(user.role) && <Link to="/admin">Админ</Link>}
           {user ? <Link to="/bookings/history">Мои заказы</Link> : <Link to="/login">Войти</Link>}
         </nav>
       </header>
@@ -40,12 +46,21 @@ export default function EventsPage() {
         <input value={filters.city} onChange={(e) => updateFilter('city', e.target.value)} placeholder="Город" />
         <input value={filters.search} onChange={(e) => updateFilter('search', e.target.value)} placeholder="Поиск по названию" />
       </section>
-      {isLoading && <div className="notice">Загружаем события...</div>}
+      {isLoading && <section className="event-grid">{Array.from({ length: 9 }, (_, index) => <div className="skeleton-card" key={index} />)}</section>}
       {error && <div className="error">Не удалось загрузить события.</div>}
-      <section className="event-grid">
-        {data?.data.map((event) => <EventCard key={event.id} event={event} onClick={() => navigate(`/events/${event.id}/seats`)} />)}
-      </section>
-      {data && (
+      {!isLoading && data?.data.length === 0 && (
+        <div className="empty-state">
+          <h2>События не найдены</h2>
+          <p>Нет событий, подходящих под выбранные фильтры.</p>
+          <button className="ghost" onClick={clearFilters}>Сбросить фильтры</button>
+        </div>
+      )}
+      {!isLoading && data?.data.length > 0 && (
+        <section className="event-grid">
+          {data.data.map((event) => <EventCard key={event.id} event={event} onClick={() => navigate(`/events/${event.id}/seats`)} />)}
+        </section>
+      )}
+      {data && data.pagination.totalPages > 1 && (
         <div className="pagination">
           <button disabled={filters.page <= 1} onClick={() => setFilters((current) => ({ ...current, page: current.page - 1 }))}>Назад</button>
           <span>{data.pagination.page} / {Math.max(data.pagination.totalPages, 1)}</span>

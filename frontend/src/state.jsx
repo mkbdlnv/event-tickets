@@ -45,3 +45,9 @@ export function RequireBooking({ children }) {
   if (!draft) return <Navigate to="/events" replace state={{ from: location }} />;
   return children;
 }
+
+export function RequireAdmin({ children }) {
+  const { user } = useAuth();
+  if (!user || !['manager', 'admin'].includes(user.role)) return <Navigate to="/events" replace />;
+  return children;
+}

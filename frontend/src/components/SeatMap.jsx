@@ -16,29 +16,31 @@ export default function SeatMap({ seats, selectedIds, onToggle }) {
 
   return (
     <div className="seat-map">
-      <div className="screen">Сцена / экран</div>
-      {Object.entries(grouped).map(([row, rowSeats]) => (
-        <div className="seat-row" key={row}>
-          <div className="row-label">{row}</div>
-          <div className="seat-grid">
-            {rowSeats.map((seat) => {
-              const selected = selectedIds.includes(seat.id);
-              const visualStatus = selected ? 'selected' : seat.status;
-              return (
-                <button
-                  key={seat.id}
-                  className={`seat ${visualStatus}`}
-                  disabled={seat.status !== 'available'}
-                  onClick={() => onToggle(seat)}
-                  title={`${row}${seat.seat_number}: ${statusLabel[visualStatus]}`}
-                >
-                  {seat.seat_number}
-                </button>
-              );
-            })}
+      <div className="seat-scroll">
+        <div className="screen">Сцена / экран</div>
+        {Object.entries(grouped).map(([row, rowSeats]) => (
+          <div className="seat-row" key={row}>
+            <div className="row-label">{row}</div>
+            <div className="seat-grid">
+              {rowSeats.map((seat) => {
+                const selected = selectedIds.includes(seat.id);
+                const visualStatus = selected ? 'selected' : seat.status;
+                return (
+                  <button
+                    key={seat.id}
+                    className={`seat ${visualStatus}`}
+                    disabled={seat.status !== 'available'}
+                    onClick={() => onToggle(seat)}
+                    title={`${row}${seat.seat_number}: ${statusLabel[visualStatus]}`}
+                  >
+                    {seat.seat_number}
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
       <div className="legend">
         <span><i className="available" /> Зеленый = Доступно</span>
         <span><i className="locked" /> Желтый = Забронировано</span>
