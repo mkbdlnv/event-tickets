@@ -1,0 +1,442 @@
+:root {
+  color: #172026;
+  background: #f5f7f8;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+a {
+  color: #145f86;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+.page {
+  margin: 0 auto;
+  max-width: 1180px;
+  padding: 28px 20px 48px;
+}
+
+.page.narrow {
+  max-width: 760px;
+}
+
+.topbar {
+  align-items: center;
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  font-size: clamp(2rem, 4vw, 3.1rem);
+  line-height: 1.05;
+  margin-bottom: 8px;
+}
+
+.topbar p {
+  color: #64737d;
+  margin-bottom: 0;
+}
+
+.steps {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(4, 1fr);
+  margin: 18px 0 24px;
+}
+
+.step {
+  align-items: center;
+  background: #e8eef0;
+  border-radius: 8px;
+  color: #60707b;
+  display: flex;
+  gap: 10px;
+  min-height: 42px;
+  padding: 10px 12px;
+}
+
+.step span {
+  align-items: center;
+  background: #cbd7dc;
+  border-radius: 50%;
+  display: inline-flex;
+  height: 24px;
+  justify-content: center;
+  width: 24px;
+}
+
+.step.active {
+  background: #d9eef0;
+  color: #104f60;
+}
+
+.step.active span {
+  background: #157083;
+  color: #fff;
+}
+
+.filters {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 180px 1fr 2fr;
+  margin-bottom: 22px;
+}
+
+input,
+select {
+  background: #fff;
+  border: 1px solid #cad5da;
+  border-radius: 8px;
+  min-height: 44px;
+  padding: 10px 12px;
+  width: 100%;
+}
+
+.event-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.event-card,
+.history-card,
+.confirm-panel,
+.auth-panel,
+.success-panel {
+  background: #fff;
+  border: 1px solid #dde5e8;
+  border-radius: 8px;
+  box-shadow: 0 12px 28px rgba(33, 51, 62, 0.07);
+}
+
+.event-card {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  min-height: 270px;
+  padding: 18px;
+  text-align: left;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.event-card:hover {
+  box-shadow: 0 16px 34px rgba(33, 51, 62, 0.12);
+  transform: translateY(-2px);
+}
+
+.event-card p {
+  color: #63727b;
+  flex: 1;
+}
+
+.badge {
+  align-self: flex-start;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+  padding: 5px 10px;
+}
+
+.badge.movie {
+  background: #3e7f58;
+}
+
+.badge.concert {
+  background: #8a4f97;
+}
+
+.badge.sport {
+  background: #b45831;
+}
+
+.meta,
+.card-footer,
+.action-bar,
+.history-card {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+
+.card-footer,
+.action-bar,
+.history-card {
+  justify-content: space-between;
+}
+
+.card-footer {
+  border-top: 1px solid #e8eef0;
+  margin-top: 14px;
+  padding-top: 14px;
+}
+
+.seat-map {
+  background: #fff;
+  border: 1px solid #dde5e8;
+  border-radius: 8px;
+  padding: 18px;
+}
+
+.screen {
+  background: #25313a;
+  border-radius: 6px;
+  color: #fff;
+  margin: 0 auto 24px;
+  max-width: 520px;
+  padding: 12px;
+  text-align: center;
+}
+
+.seat-row {
+  align-items: center;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 32px 1fr;
+  margin-bottom: 10px;
+}
+
+.row-label {
+  color: #60707b;
+  font-weight: 800;
+}
+
+.seat-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(10, minmax(36px, 1fr));
+}
+
+.seat {
+  border: 0;
+  border-radius: 7px;
+  color: #fff;
+  cursor: pointer;
+  min-height: 38px;
+  min-width: 36px;
+}
+
+.seat.available {
+  background: #2f8f57;
+}
+
+.seat.locked {
+  background: #d2a321;
+  cursor: not-allowed;
+}
+
+.seat.sold {
+  background: #be3b3b;
+  cursor: not-allowed;
+}
+
+.seat.selected {
+  background: #1976d2;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.legend span {
+  align-items: center;
+  display: inline-flex;
+  gap: 7px;
+}
+
+.legend i {
+  border-radius: 4px;
+  display: inline-block;
+  height: 16px;
+  width: 16px;
+}
+
+.legend .available {
+  background: #2f8f57;
+}
+
+.legend .locked {
+  background: #d2a321;
+}
+
+.legend .sold {
+  background: #be3b3b;
+}
+
+.legend .selected {
+  background: #1976d2;
+}
+
+.primary,
+.ghost,
+.pagination button {
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 800;
+  min-height: 44px;
+  padding: 10px 16px;
+}
+
+.primary {
+  background: #156d7e;
+  color: #fff;
+}
+
+.primary:disabled,
+.pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.ghost {
+  background: #e8eef0;
+  color: #172026;
+}
+
+.link-button {
+  display: inline-flex;
+  justify-content: center;
+}
+
+.action-bar {
+  background: #fff;
+  border: 1px solid #dde5e8;
+  border-radius: 8px;
+  margin-top: 16px;
+  padding: 14px;
+}
+
+.timer,
+.notice,
+.error {
+  border-radius: 8px;
+  margin-bottom: 16px;
+  padding: 12px 14px;
+}
+
+.timer,
+.notice {
+  background: #e2f2f0;
+  color: #145f55;
+}
+
+.error {
+  background: #ffe7e4;
+  color: #93332d;
+}
+
+.auth-page {
+  align-items: center;
+  display: flex;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.auth-panel,
+.confirm-panel,
+.success-panel {
+  margin: 0 auto;
+  max-width: 480px;
+  padding: 24px;
+  width: 100%;
+}
+
+.auth-panel label,
+.confirm-panel label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.password-field {
+  display: grid;
+  grid-template-columns: 1fr 44px;
+}
+
+.password-field input {
+  border-radius: 8px 0 0 8px;
+}
+
+.password-field button {
+  background: #e8eef0;
+  border: 1px solid #cad5da;
+  border-left: 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.seat-list {
+  padding-left: 20px;
+}
+
+.total {
+  display: block;
+  font-size: 1.25rem;
+  margin: 18px 0;
+}
+
+.pagination {
+  align-items: center;
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.history-list {
+  display: grid;
+  gap: 14px;
+}
+
+.history-card {
+  padding: 18px;
+}
+
+@media (max-width: 820px) {
+  .topbar,
+  .action-bar,
+  .history-card {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .steps,
+  .filters,
+  .event-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .seat-row {
+    grid-template-columns: 24px 1fr;
+  }
+
+  .seat-grid {
+    grid-template-columns: repeat(5, minmax(42px, 1fr));
+  }
+}
